@@ -73,10 +73,14 @@ console.log("localMovies:", movies);
 
 /* ------------------------------ Dom Functions ----------------------------- */
 let display = document.getElementById("movieDisplay");
+let newMovie = false;
 
 const loadMovies = () => {
+    let load;
+    newMovie === true ? load = getMovies() : load = defaultMovies;
     display.innerHTML = ""
-    getMovies().forEach(movie => {
+
+    load.forEach(movie => {
         let movieCard = document.createElement("div");
         let movieTitle = document.createElement("h3");
         let movieInfo = document.createElement("p");
@@ -114,14 +118,19 @@ const handleSubmit = (e) => {
     const { title, criticScore, audienceScore, domesticGrossSales, genre } = Object.fromEntries(formData);
 
     let movieInfo = [title, criticScore, audienceScore, domesticGrossSales, genre]
-    
+
     let created = createMovie(movieInfo)
     addmovies(created);
 
-    loadMovies()
+    newMovie = true
+    loadMovies(newMovie)
     form.reset();
 };
 
+const reset = () => {
+    newMovie = false
+    loadMovies(newMovie)
+}
 
 /* ---------------------------------- MAIN ---------------------------------- */
 const main = () => {
@@ -129,6 +138,9 @@ const main = () => {
 
     let form = document.getElementById("new-movie-form");
     form.addEventListener("submit", handleSubmit);
+
+    let resetBtn = document.getElementById("reset");
+    resetBtn.addEventListener("click", reset)
 
     loadMovies()
 }

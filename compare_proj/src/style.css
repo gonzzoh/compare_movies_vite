@@ -40,11 +40,13 @@ form {
   grid-gap: 20px;
   grid-template-columns: [first] 1fr [second2] 1fr [third] 1fr;
   grid-template-rows: [row1-start] 1fr [row1-end] 1fr [third-line] 1fr;
+  overflow: scroll;
 }
 
-#movieCard {
+.movieCard {
   background-color: darkgray;
   height: 7em;
-  width: 15em
+  width: 15em;
   margin: 10px;
 }
+
