@@ -111,7 +111,7 @@ const domesticByGenre = () => {
     for (let i = 0; i < movies.length; i++) {
         genresDomestic[movies[i].genre] += movies[i].domestic;
     }
-    console.log("genresDomestic:", genresDomestic);
+    // console.log("genresDomestic:", genresDomestic);
     return genresDomestic;
 };
 
@@ -143,7 +143,7 @@ const moviesPerGenre = () => {
     for (let i = 0; i < movies.length; i++) {
         genresQuantity[movies[i].genre] += 1;
     }
-    console.log("genresQuantity:", genresQuantity);
+    // console.log("genresQuantity:", genresQuantity);
     return genresQuantity;
 }
 
@@ -159,17 +159,29 @@ new Chart(genreQuantity, {
     }
 })
 
+
+const ratingsData = movies.map(movie => ({
+    title : movie.title,
+    x : movie.audienceScore,
+    y : movie.criticScore
+}))
+console.log("ratingsData:", ratingsData);
 new Chart(ratings, {
     type: 'scatter',
     data: {
-        labels: [],
         datasets: [{
             label: 'Critic Score vs. Audience Score',
-            data: movies.map(movie => ({
-                x: movie.criticScore,
-                y: movie.audienceScore
-            })),
+            data: ratingsData,
+            borderWidth: 1
         }]
+    },
+    options: {
+      scales: {
+        x: {
+          type: 'linear',
+          position: 'bottom',
+        }
+      }
     }
 })
 
