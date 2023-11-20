@@ -103,7 +103,7 @@ const reset = () => {
 /* -------------------------------- Chart.js -------------------------------- */
 const domesticPerGenre = document.getElementById('domesticChart');
 const genreQuantity = document.getElementById('genreQuantityChart');
-
+const ratings = document.getElementById('ratingsChart');
 
 const domesticByGenre = () => {
     const genresDomestic = {};
@@ -137,19 +137,46 @@ new Chart(domesticPerGenre, {
     }
 });
 
+const moviesPerGenre = () => {
+    const genresQuantity = {};
+    movies.forEach(movie => genresQuantity[movie.genre] = 0);
+    for (let i = 0; i < movies.length; i++) {
+        genresQuantity[movies[i].genre] += 1;
+    }
+    console.log("genresQuantity:", genresQuantity);
+    return genresQuantity;
+}
 
 new Chart(genreQuantity, {
     type: 'pie',
     data: {
-        labels: movies.map(movie => movie.genre),
+        labels: Object.keys(moviesPerGenre()).map(genre => genre),
         datasets: [{
             label: 'Quantity of Movies by Genre',
-            data: movies.map(movie => movie.genre),
+            data: Object.values(moviesPerGenre()).map(quantity => quantity),
             borderWidth: 1
         }]
     }
 })
 
+new Chart(ratings, {
+    type: 'scatter',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'Critic Score vs. Audience Score',
+            data: movies.map(movie => ({
+                x: movie.criticScore,
+                y: movie.audienceScore
+            })),
+        }]
+    }
+})
+
+const loadCharts = () => {
+    domesticByGenre()
+    moviesPerGenre()
+}
 /* ---------------------------------- MAIN ---------------------------------- */
 const main = () => {
     initmoviesIfEmpty();
@@ -160,8 +187,7 @@ const main = () => {
     let resetBtn = document.getElementById("reset");
     resetBtn.addEventListener("click", reset)
 
-    domesticByGenre()
-
+    loadCharts()
     loadMovies()
 }
 
