@@ -1,26 +1,26 @@
 select,
 fieldset {
-    display: block;
-    margin: 1rem 0;
+  display: block;
+  margin: 1rem 0;
 }
 
 button {
-    display: block;
-    margin: 1rem auto;
+  display: block;
+  margin: 1rem auto;
 }
 
 form {
-    width: 10rem;
-    height: 15rem;
-    padding: 1rem;
-    border: 0.1rem solid black;
-    display: flex;
-    flex-direction: column;
+  width: 10rem;
+  height: 15rem;
+  padding: 1rem;
+  border: 0.1rem solid black;
+  display: flex;
+  flex-direction: column;
 }
 
 #topSide {
   display: flex;
-    flex-direction: row;
+  flex-direction: row;
 }
 
 #genre {
@@ -49,4 +49,3 @@ form {
   width: 15em;
   margin: 10px;
 }
-
