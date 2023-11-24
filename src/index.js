@@ -32,23 +32,20 @@ export const addmovies = (newMovie) => {
 }
 
 export const initmoviesIfEmpty = () => {
-    if (!getMovies.length) setmovies(defaultMovies)
+    if (!getMovies().length) setmovies(defaultMovies)
 }
 
-// const localMovies = getMovies().forEach(console.log)
 const movies = getMovies();
 console.log("localMovies:", movies);
 
 /* ------------------------------ Dom Functions ----------------------------- */
 let display = document.getElementById("movieDisplay");
-let newMovie = false;
+// let newMovie = false;
 
-const loadMovies = () => {
-    let load;
-    newMovie === true ? load = getMovies() : load = defaultMovies;
+const loadMovies = (arr) => {
     display.innerHTML = ""
 
-    load.forEach(movie => {
+    arr.forEach(movie => {
         let movieCard = document.createElement("div");
         let movieTitle = document.createElement("h3");
         let movieInfo = document.createElement("p");
@@ -90,14 +87,16 @@ const handleSubmit = (e) => {
     let created = createMovie(movieInfo)
     addmovies(created);
 
-    newMovie = true
-    loadMovies(newMovie)
+    loadMovies(getMovies())
+    loadCharts()
     form.reset();
 };
 
 const reset = () => {
-    newMovie = false
-    loadMovies(newMovie)
+    setmovies(defaultMovies)
+    loadMovies(defaultMovies)
+    loadCharts()
+    // console.log(defaultMovies)
 }
 
 /* -------------------------------- Chart.js -------------------------------- */
@@ -160,15 +159,17 @@ new Chart(genreQuantity, {
 })
 
 
-const ratingsData = movies.map(movie => ({
-    title : movie.title,
-    x : movie.audienceScore,
-    y : movie.criticScore
+const ratingsData = getMovies().map(movie => ({
+    title: movie.title,
+    x: movie.audienceScore,
+    y: movie.criticScore
 }))
+
 console.log("ratingsData:", ratingsData);
 new Chart(ratings, {
     type: 'scatter',
     data: {
+        labels: ratingsData.map(data => data.title),
         datasets: [{
             label: 'Critic Score vs. Audience Score',
             data: ratingsData,
@@ -176,14 +177,14 @@ new Chart(ratings, {
         }]
     },
     options: {
-      scales: {
-        x: {
-          type: 'linear',
-          position: 'bottom',
+        scales: {
+            x: {
+                type: 'linear',
+                position: 'bottom',
+            }
         }
-      }
     }
-})
+})    
 
 const loadCharts = () => {
     domesticByGenre()
@@ -200,7 +201,7 @@ const main = () => {
     resetBtn.addEventListener("click", reset)
 
     loadCharts()
-    loadMovies()
+    loadMovies(getMovies())
 }
 
 main();
